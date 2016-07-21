@@ -17,23 +17,33 @@ public class CollectdTask implements Runnable{
 	Properties properties;
 	String hostname;
 	
-	CollectdTask(List<List<MetricVo>> list, SimulProperties simulProperties)	{
+	//부여 받은 넘버
+	int number;
+	
+	CollectdTask(List<List<MetricVo>> list, SimulProperties simulProperties, int number)	{
 		this.list = list;
 		this.simulProperties = simulProperties;
 		properties = simulProperties.getProducerProp();
+		settingsConfig = simulProperties.getSettingsConfig();
+		hostname = settingsConfig.getHostname();
+		
 	}
 	
 	public void run() {
+		
+		List<List<MetricVo>> simulList = initList(list);
 		
 	}
 	
 	//받은 리스트를 다시 자기 걸로 가공
 	public List<List<MetricVo>> initList(List<List<MetricVo>> list)	{
 		
+		String host = hostname + String.format("%03d", number);
 		List<List<MetricVo>> copyListList = new ArrayList<List<MetricVo>>();
 		
 		for(int k=0; k<list.size(); k++)	{
 			
+			//list
 			List<MetricVo> copyList = copyListList.get(k);
 			List<MetricVo> newList = new ArrayList<MetricVo>();
 			
@@ -43,14 +53,28 @@ public class CollectdTask implements Runnable{
 				
 				metricVo.setDsnames(copyVo.getDsnames());
 				metricVo.setDstypes(copyVo.getDstypes());
-				//metricVo.setHost(host);
+				metricVo.setHost(host);
+				metricVo.setInterval(copyVo.getInterval());
+				metricVo.setPlugin(copyVo.getPlugin());
+				metricVo.setPlugin_instance(copyVo.getPlugin_instance());
+				metricVo.setType(copyVo.getType());
+				metricVo.setType_instance(copyVo.getType_instance());
+				metricVo.setValues(copyVo.getValues());
+				
+				newList.add(metricVo);
 			}
+			
+			
 		}
 		
 		return list;
 	}
 	
 	public void setProducer()	{
+		
+	}
+	
+	public void setTime()	{
 		
 	}
 }
