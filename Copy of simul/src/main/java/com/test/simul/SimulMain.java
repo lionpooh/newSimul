@@ -59,6 +59,7 @@ public class SimulMain {
 	    		
 	    	}
 	    	
+	    	
 	    	//만들어진 task로 threadPool 동작
         } catch(Exception e)	{
         	e.printStackTrace();

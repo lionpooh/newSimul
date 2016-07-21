@@ -16,9 +16,13 @@ public class CollectdTask implements Runnable{
 	SettingsConfigVo settingsConfig;
 	Properties properties;
 	String hostname;
+	JsonToVo parser;
+	
+	//제어변수
+	static boolean isStop = true;
 	
 	//부여 받은 넘버
-	int number;
+	private int number;
 	
 	CollectdTask(List<List<MetricVo>> list, SimulProperties simulProperties, int number)	{
 		this.list = list;
@@ -26,12 +30,19 @@ public class CollectdTask implements Runnable{
 		properties = simulProperties.getProducerProp();
 		settingsConfig = simulProperties.getSettingsConfig();
 		hostname = settingsConfig.getHostname();
-		
+		parser = new JsonToVo();
 	}
 	
 	public void run() {
 		
 		List<List<MetricVo>> simulList = initList(list);
+		List<List<String>> listOfJsonList = new ArrayList<List<String>>();
+		//vo -> json / 할때 마다 시간이 바뀌게
+		parser.voToJson();
+		//
+		/*while(isStop)	{
+			
+		}*/
 		
 	}
 	
@@ -39,12 +50,13 @@ public class CollectdTask implements Runnable{
 	public List<List<MetricVo>> initList(List<List<MetricVo>> list)	{
 		
 		String host = hostname + String.format("%03d", number);
-		List<List<MetricVo>> copyListList = new ArrayList<List<MetricVo>>();
+		
+		List<List<MetricVo>> newListList = new ArrayList<List<MetricVo>>();
 		
 		for(int k=0; k<list.size(); k++)	{
 			
 			//list
-			List<MetricVo> copyList = copyListList.get(k);
+			List<MetricVo> copyList = list.get(k);
 			List<MetricVo> newList = new ArrayList<MetricVo>();
 			
 			for(int i=0; i<copyList.size(); i++)	{
@@ -64,6 +76,7 @@ public class CollectdTask implements Runnable{
 				newList.add(metricVo);
 			}
 			
+			newListList.add(newList);
 			
 		}
 		
@@ -71,10 +84,6 @@ public class CollectdTask implements Runnable{
 	}
 	
 	public void setProducer()	{
-		
-	}
-	
-	public void setTime()	{
 		
 	}
 }
