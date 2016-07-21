@@ -30,7 +30,7 @@ public class SimulMain {
         	simulProperties = setConfig.insertConfig();
 			type = simulProperties.getSimulType();
 			settingsConfig = simulProperties.getSettingsConfig();
-			System.out.println("type: " + type);
+			//System.out.println("type: " + type);
 			br = new BufferedReader(new FileReader(settingsConfig.getFilePath()));
 			
 	    	while((tmp = br.readLine()) != null)	{
@@ -38,6 +38,7 @@ public class SimulMain {
 	    	}
 	    	
 	    	CreateValue createValue = new CreateValue(simulProperties);
+	    	//만들어진 결과
 	    	List<List<MetricVo>> listOfList = createValue.createSimValue(parser.sampleToMetricVo(list));
         	
 	    	/*for(int i=0; i<listOfList.size(); i++)	{
@@ -50,7 +51,15 @@ public class SimulMain {
 	    		}
 	    	}*/
 	    	
+	    	if(type.equals("collectd"))	{
+	    		
+	    	} 
 	    	
+	    	else if(type.equals("collectdwin"))	{
+	    		
+	    	}
+	    	
+	    	//만들어진 task로 threadPool 동작
         } catch(Exception e)	{
         	e.printStackTrace();
         }
