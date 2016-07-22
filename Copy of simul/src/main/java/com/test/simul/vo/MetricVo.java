@@ -7,7 +7,7 @@ public class MetricVo {
 	private String plugin_instance;
 	private String type;
 	private String type_instance;
-	private Double time;
+	private String time;
 	private Double interval;
 	private String dstypes[];
 	private String dsnames[];
@@ -44,10 +44,10 @@ public class MetricVo {
 	public void setType_instance(String type_instance) {
 		this.type_instance = type_instance;
 	}
-	public Double getTime() {
+	public String getTime() {
 		return time;
 	}
-	public void setTime(Double time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	public Double getInterval() {

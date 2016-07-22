@@ -1,5 +1,6 @@
 package com.test.simul.service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +43,42 @@ public class JsonToVo {
 		return metricList;
 	}
 	
-	public void voToJson()	{
+	public List<List<String>> voToJson(List<List<MetricVo>> list, String type)	{
+		Gson gson = new Gson();
+		List<List<String>> jsonListList = new ArrayList<List<String>>();
 		
+		//time 설정
+		double time = System.currentTimeMillis();
+		time = time/1000;
+		String jsonTime = null;
+		
+		if(type.equals("collectd"))	{
+			DecimalFormat formatter = new DecimalFormat("0.000");
+			jsonTime = formatter.format(time);
+		}
+		
+		else if(type.equals("collectdwin"))	{
+			jsonTime = String.valueOf(time);
+		}
+		
+		for(int i=0; i<list.size(); i++)	{
+			
+			List<String> jsonList = new ArrayList<String>();
+			List<MetricVo> metricList = list.get(i);
+			
+			for(int k=0; k<metricList.size(); k++)	{
+				MetricVo metricVo = metricList.get(k);
+				metricVo.setTime(jsonTime);
+				String json = gson.toJson(metricVo);
+				json = json.replaceAll("\"time.*(?=,\"interval\")", "\"time\":" + jsonTime);
+				System.out.println("time: " +json);
+				//metricList.add(metricVo);
+				jsonList.add(json);
+			}
+			
+			jsonListList.add(jsonList);
+		}
+		
+		return jsonListList; 
 	}
 }

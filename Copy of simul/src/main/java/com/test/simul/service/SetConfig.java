@@ -87,6 +87,8 @@ public class SetConfig {
 			String time = "10";
 			String filepath = null;
 			String hostname = null;
+			String topic = null;
+			int startNum;
 			int convertTime = 10000;
 			int threadSize = 1;
 			
@@ -127,6 +129,12 @@ public class SetConfig {
 				settingsConfig.setThreadSize(1);
 			}
 			
+			topic = inProp.getProperty("producer.topic");
+			settingsConfig.setTopic(topic);
+			
+			startNum = Integer.parseInt(inProp.getProperty("simulator.startnum"));
+			settingsConfig.setStartNum(startNum);
+			
 			simProp.setSettingsConfig(settingsConfig);
 		}
 				
@@ -155,8 +163,9 @@ public class SetConfig {
 		
 		else if(inPrefix.equals("producer"))	{
 			Properties producerProp = new Properties();
-			producerProp.setProperty("topic", inProp.getProperty("producer.topic"));
-			producerProp.setProperty("bootstrap.servers", "producer.bootstrap.servers");
+			
+			//producerProp.setProperty("topic", inProp.getProperty("producer.topic"));
+			producerProp.setProperty("bootstrap.servers", inProp.getProperty("producer.bootstrap.servers"));
 			producerProp.setProperty("acks", inProp.getProperty("producer.acks"));
 			producerProp.setProperty("retries", inProp.getProperty("producer.retries"));
 			producerProp.setProperty("retry.backoff.ms", inProp.getProperty("producer.retry.backoff.ms"));

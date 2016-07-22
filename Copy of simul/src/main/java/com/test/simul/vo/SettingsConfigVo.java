@@ -10,6 +10,7 @@ public class SettingsConfigVo {
 	
 	private String enablehostname;
 	private String hostname;
+	private String topic;
 	
 	public String getFilePath() {
 		return filePath;
@@ -47,5 +48,12 @@ public class SettingsConfigVo {
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
 	}
+	public String getTopic() {
+		return topic;
+	}
+	public void setTopic(String topic) {
+		this.topic = topic;
+	}
+	
 	
 }
