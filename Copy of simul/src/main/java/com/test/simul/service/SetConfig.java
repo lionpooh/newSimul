@@ -43,11 +43,11 @@ public class SetConfig {
 		} else {
 			//configPath가 비어 있으면
 			logger.debug("property filePath set to default");
-			/*//return null;
+			//return null;
 			is = ClassLoader.getSystemResourceAsStream("setting.properties");
-			*/
-			logger.error("error occured... simulator exit");
-			System.exit(1);
+			
+			/*logger.error("error occured... simulator exit");
+			System.exit(1);*/
 		}
 		//property 파일 load
 		prop.load(is);
