@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<!-- property file location -->
+	<!-- 
+		<property file="${simul.config.location}"/> 
+		
+	-->
+	<property resource="setting.properties"/>
+	
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>
+				%-5level - %d{HH:mm:ss.SSS} [%thread] %logger[%method:%line] - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="fileLogger" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.filePath}/${log.fileName}.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${log.filePath}/${log.fileName}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<maxFileSize>${log.fileSize}</maxFileSize>
+		</rollingPolicy>
+		
+		<!-- <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>${log.fileSize}</maxFileSize>
+		</triggeringPolicy> -->
+		
+		<encoder>
+			<pattern>
+				%-5level - %d{HH:mm:ss.SSS} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<if condition='property("log.level").contains("debug")'>
+		<then>
+			<root level="debug">
+				<appender-ref ref="fileLogger"/>
+				<appender-ref ref="console"/>
+			</root>
+		</then>
+	</if>
+	
+	<if condition='property("log.level").contains("info")'>
+		<then>
+			<root level="info">
+				<appender-ref ref="fileLogger"/>
+				<appender-ref ref="console"/>
+			</root>
+		</then>
+	</if>
+	
+	<if condition='property("log.level").contains("error")'>
+		<then>
+			<root level="error">
+				<appender-ref ref="fileLogger"/>
+				<appender-ref ref="console"/>
+			</root>
+		</then>
+	</if>
+	
+</configuration>

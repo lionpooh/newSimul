@@ -2,6 +2,7 @@ package com.test.simul;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -45,7 +46,8 @@ public class SimulMain {
 			
 			//내부에 있는 파일 읽기 -> 수정
 			//br = new BufferedReader(new FileReader(settingsConfig.getFilePath()));
-			br = new BufferedReader(new FileReader());
+			
+			br = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("logfile/collectd.log")));
 			
 	    	while((tmp = br.readLine()) != null)	{
 	    		list.add(tmp);
