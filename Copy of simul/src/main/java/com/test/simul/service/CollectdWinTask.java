@@ -72,13 +72,13 @@ public class CollectdWinTask implements Runnable{
 					conn.setRequestProperty("Content-Type", CONTENT_TYPE);						
 					os = conn.getOutputStream();
 					DataOutputStream dos = new DataOutputStream(os);
-					//System.out.println("send: " + list.get(k));
+					System.out.println("send: " + list.get(i));
 					dos.writeBytes(list.toString());
 					dos.flush();
 					dos.close();
 					
 					int responseCode = conn.getResponseCode();
-					System.out.println("responseCode: " + responseCode);
+					
 					Thread.sleep(settingsConfig.getInterval());
 				}
 				

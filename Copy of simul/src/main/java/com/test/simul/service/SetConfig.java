@@ -210,7 +210,7 @@ public class SetConfig {
 			if((list.size() != value))	{
 
 				if(list.size() > value)	{
-					int check = value;					
+					int check = value + 1;
 					while(list.size() != value)	{		
 						list.remove(check);
 						check = check - 1;

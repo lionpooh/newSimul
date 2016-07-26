@@ -1,6 +1,0 @@
-[{"host":"win-5c6p0r7hvc1","plugin":"df","plugin_instance":"C:","type":"percent_bytes","type_instance":"free","time":1.463126807024E9,"interval":10,"dstypes":["gauge"],"dsnames":["value"],"values":[92.1023712158203],"meta":{"dc":"datacenter-1","env":"prod","region":"ny"}}]
-[{"host":"win-5c6p0r7hvc1","plugin":"df","plugin_instance":"C:","type":"percent_bytes","type_instance":"used","time":1.463126807024E9,"interval":10,"dstypes":["gauge"],"dsnames":["value"],"values":[7.89762878417969],"meta":{"dc":"datacenter-1","env":"prod","region":"ny"}}]
-
-[{"values":[92.1455535888672],"dstypes":["gauge"],"dsnames":["value"],"time":1467168408.732,"interval":10.000,"host":"ENT-HQ10-PLA-01","plugin":"df","plugin_instance":"root","type":"percent_bytes","type_instance":"free"}]
-[{"values":[2.77234148979187],"dstypes":["gauge"],"dsnames":["value"],"time":1467168408.732,"interval":10.000,"host":"ENT-HQ10-PLA-01","plugin":"df","plugin_instance":"root","type":"percent_bytes","type_instance":"used"}]
-[{"values":[5.08209705352783],"dstypes":["gauge"],"dsnames":["value"],"time":1467168408.732,"interval":10.000,"host":"ENT-HQ10-PLA-01","plugin":"df","plugin_instance":"root","type":"percent_bytes","type_instance":"reserved"}]

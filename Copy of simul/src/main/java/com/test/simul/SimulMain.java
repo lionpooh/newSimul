@@ -22,7 +22,11 @@ import com.test.simul.vo.SimulProperties;
 
 public class SimulMain {
     public static void main( String[] args ) {
-        SetConfig setConfig = new SetConfig();
+    	
+    	//config file 경로
+    	String configPath = System.getProperty("simul.config.path", null);
+    	
+        SetConfig setConfig = new SetConfig(configPath);
         SimulProperties simulProperties = new SimulProperties();
         SettingsConfigVo settingsConfig = null;
         BufferedReader br = null;
@@ -31,16 +35,17 @@ public class SimulMain {
         List<String> list = new ArrayList<String>();
         String tmp = null;
         
-        String configPath = null;
+        //String configPath = null;
     	String type = null;
         
         try {
         	simulProperties = setConfig.insertConfig();
 			type = simulProperties.getSimulType();
 			settingsConfig = simulProperties.getSettingsConfig();
-			//System.out.println("type: " + type);
-			//내부에 있는 파일 읽기
-			br = new BufferedReader(new FileReader(settingsConfig.getFilePath()));
+			
+			//내부에 있는 파일 읽기 -> 수정
+			//br = new BufferedReader(new FileReader(settingsConfig.getFilePath()));
+			br = new BufferedReader(new FileReader());
 			
 	    	while((tmp = br.readLine()) != null)	{
 	    		list.add(tmp);
