@@ -32,4 +32,21 @@ public class Counter {
 		
 		totaloffset = p1+p2+p3 +1;
 	}
+
+	public long getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(long totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public long getTotaloffset() {
+		return totaloffset;
+	}
+
+	public void setTotaloffset(long totaloffset) {
+		this.totaloffset = totaloffset;
+	}
+
 }

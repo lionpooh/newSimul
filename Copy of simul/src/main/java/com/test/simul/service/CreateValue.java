@@ -91,17 +91,19 @@ public class CreateValue {
 					}
 					
 					simMetricVo.setType_instance(type_instance);
+					simMetricVo.setType(metricVo.getType());
 					simMetricVo.setPlugin(plugin);
-					simMetricVo.setValues(value);
+					simMetricVo.setValue(value);
+					
 					metricVoList.add(simMetricVo);
 					continue;
 				}
-
+				simMetricVo.setType(metricVo.getType());
 				simMetricVo.setPlugin(plugin);
 				simMetricVo.setType_instance(type_instance);
 
 				double values[] = setCustomValue(prefix, suffix, k);
-				simMetricVo.setValues(values);
+				simMetricVo.setValue(values);
 
 				metricVoList.add(simMetricVo);
 			}

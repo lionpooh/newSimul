@@ -60,10 +60,7 @@ public class CollectdWinTask implements Runnable{
 				
 				for(int i=0; i<listOfJsonList.size(); i++)	{
 					List<String> list = listOfJsonList.get(i);
-					/*for(int k=0; k<list.size(); k++)	{
-						
-					}*/
-				
+					
 					obj = new URL(POST_URL);
 					conn = (HttpURLConnection) obj.openConnection();
 					conn.setRequestMethod("POST");
@@ -72,7 +69,8 @@ public class CollectdWinTask implements Runnable{
 					conn.setRequestProperty("Content-Type", CONTENT_TYPE);						
 					os = conn.getOutputStream();
 					DataOutputStream dos = new DataOutputStream(os);
-					System.out.println("send: " + list.get(i));
+					System.out.println("send: " + list.toString());
+					counter.addCount(list.size());
 					dos.writeBytes(list.toString());
 					dos.flush();
 					dos.close();
@@ -80,6 +78,9 @@ public class CollectdWinTask implements Runnable{
 					int responseCode = conn.getResponseCode();
 					
 					Thread.sleep(settingsConfig.getInterval());
+					if(!isStop)	{
+						break;
+					}
 				}
 				
 			}
@@ -121,7 +122,7 @@ public List<List<MetricVo>> initList(List<List<MetricVo>> list)	{
 				metricVo.setPlugin_instance(copyVo.getPlugin_instance());
 				metricVo.setType(copyVo.getType());
 				metricVo.setType_instance(copyVo.getType_instance());
-				metricVo.setValues(copyVo.getValues());
+				metricVo.setValue(copyVo.getValue());
 				
 				newList.add(metricVo);
 			}

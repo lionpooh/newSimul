@@ -1,7 +1,6 @@
 package com.test.simul;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +9,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.test.simul.service.CollectdTask;
 import com.test.simul.service.CollectdWinTask;
@@ -23,6 +25,8 @@ import com.test.simul.vo.SimulProperties;
 
 public class SimulMain {
     public static void main( String[] args ) {
+    	
+    	Logger logger = LoggerFactory.getLogger(SimulMain.class);
     	
     	//config file 경로
     	String configPath = System.getProperty("simul.config.path", null);
@@ -88,6 +92,8 @@ public class SimulMain {
 	    		cmd = sc.nextLine();	
 	    		if(cmd.equals("exit"))	{
 	    			CollectdTask.isStop = false;
+	    			CollectdWinTask.isStop = false;
+	    			executorService.shutdown();
 	    			break;
 	    		} else	{
 	    			//logger.debug("enter exit");
@@ -105,6 +111,12 @@ public class SimulMain {
 					e.printStackTrace();
 				}
 	    	}
+	    	
+	    	//System.out.println("count: " );
+	    	logger.info("count: " + counter.getTotalCount());
+	    	//offset if collectd
+	    	if(type.equals("collectd"))
+	    		logger.info("offset: " + counter.getTotaloffset());
 	    	
 	    	sc.close();
 	    	

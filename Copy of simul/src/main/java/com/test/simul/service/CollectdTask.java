@@ -67,7 +67,7 @@ public class CollectdTask implements Runnable{
 						//send
 						//producer.send(record)
 						//System.out.println("send: " + list.get(k));
-						producer.send(new ProducerRecord<String, String>(topic, list.get(k)), new Callback(){
+						producer.send(new ProducerRecord<String, String>(topic, "[" + list.get(k) + "]"), new Callback(){
 
 							public void onCompletion(RecordMetadata metadata, Exception exception) {
 								if(exception != null)	{
@@ -79,6 +79,9 @@ public class CollectdTask implements Runnable{
 						});
 					}
 					Thread.sleep(settingsConfig.getInterval());
+					if(!isStop)	{
+						break;
+					}
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -113,7 +116,7 @@ public class CollectdTask implements Runnable{
 				metricVo.setPlugin_instance(copyVo.getPlugin_instance());
 				metricVo.setType(copyVo.getType());
 				metricVo.setType_instance(copyVo.getType_instance());
-				metricVo.setValues(copyVo.getValues());
+				metricVo.setValue(copyVo.getValue());
 				
 				newList.add(metricVo);
 			}

@@ -34,6 +34,10 @@
 		</encoder>
 	</appender>
 	
+	<logger name="com.test.simul.SimulMain" level="info">
+		<appender-ref ref="fileLogger"/>
+	</logger>
+	
 	<if condition='property("log.level").contains("debug")'>
 		<then>
 			<root level="debug">
