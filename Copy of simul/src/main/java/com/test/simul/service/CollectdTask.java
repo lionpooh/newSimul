@@ -44,29 +44,20 @@ public class CollectdTask implements Runnable{
 	}
 	
 	public void run() {
-		
 		List<List<MetricVo>> simulList = initList(list);
-		//System.out.println("host: " + simulList.get(0).get(0).getHost());
 		List<List<String>> listOfJsonList = new ArrayList<List<String>>();
-		
-		//vo -> json / 할때 마다 시간이 바뀌게
 		listOfJsonList = parser.voToJson(simulList, "collectd");
-		
-		//System.out.println("properties: " + properties.getProperty("bootstrap.servers"));
-		//System.out.println("size: " + listOfJsonList.size());
+
 		KafkaProducer<String, String> producer = new KafkaProducer<String, String>(properties);
-		
+
 		while(isStop)	{
 			
 			try {
 				for(int i=0; i<listOfJsonList.size(); i++)	{
-					//System.out.println("send to " + topic);
+					listOfJsonList = parser.voToJson(simulList, "collectd");
 					List<String> list = listOfJsonList.get(i);
-					//System.out.println("size: " + list.size());
 					for(int k=0; k<list.size(); k++)	{
-						//send
-						//producer.send(record)
-						//System.out.println("send: " + list.get(k));
+
 						producer.send(new ProducerRecord<String, String>(topic, "[" + list.get(k) + "]"), new Callback(){
 
 							public void onCompletion(RecordMetadata metadata, Exception exception) {
@@ -93,17 +84,21 @@ public class CollectdTask implements Runnable{
 	
 	//받은 리스트를 다시 자기 걸로 가공
 	public List<List<MetricVo>> initList(List<List<MetricVo>> list)	{
-		
-		String host = hostname + String.format("%03d", number);
-		
+		String host = "";
+		if(settingsConfig.getEnablehostname().equals("enable"))	{
+			host = hostname;
+		}
+		else	{
+			host = hostname + String.format("%03d", number);
+		}
 		List<List<MetricVo>> newListList = new ArrayList<List<MetricVo>>();
-		
+		try {
 		for(int k=0; k<list.size(); k++)	{
 			
 			//list
 			List<MetricVo> copyList = list.get(k);
 			List<MetricVo> newList = new ArrayList<MetricVo>();
-			
+
 			for(int i=0; i<copyList.size(); i++)	{
 				MetricVo copyVo = copyList.get(i);
 				MetricVo metricVo = new MetricVo();
@@ -114,17 +109,22 @@ public class CollectdTask implements Runnable{
 				metricVo.setInterval(copyVo.getInterval());
 				metricVo.setPlugin(copyVo.getPlugin());
 				metricVo.setPlugin_instance(copyVo.getPlugin_instance());
+				System.out.println("plugin: " + copyVo.getPlugin());
+				if(copyVo.getPlugin().equals("memory"))
+					metricVo.setPlugin_instance("");
+				
 				metricVo.setType(copyVo.getType());
 				metricVo.setType_instance(copyVo.getType_instance());
-				metricVo.setValue(copyVo.getValue());
+				metricVo.setValues(copyVo.getValues());
 				
 				newList.add(metricVo);
 			}
-			
 			newListList.add(newList);
 			
 		}
-		
+		} catch(Exception e)	{
+			e.printStackTrace();
+		}
 		return newListList;
 	}
 	

@@ -29,7 +29,7 @@ public class SimulMain {
     	Logger logger = LoggerFactory.getLogger(SimulMain.class);
     	
     	//config file 경로
-    	String configPath = System.getProperty("simul.config.path", null);
+    	String configPath = System.getProperty("simul.config.location", null);
     	
         SetConfig setConfig = new SetConfig(configPath);
         SimulProperties simulProperties = new SimulProperties();
@@ -39,8 +39,6 @@ public class SimulMain {
         
         List<String> list = new ArrayList<String>();
         String tmp = null;
-        
-        //String configPath = null;
     	String type = null;
         
         try {
@@ -48,10 +46,14 @@ public class SimulMain {
 			type = simulProperties.getSimulType();
 			settingsConfig = simulProperties.getSettingsConfig();
 			
-			//내부에 있는 파일 읽기 -> 수정
-			//br = new BufferedReader(new FileReader(settingsConfig.getFilePath()));
-			
-			br = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("logfile/collectd.log")));
+			if(type.equals("collectd"))	
+				br = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("logfile/collectd.log")));
+			else if(type.equals("collectdwin"))
+				br = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("logfile/collectdwin.log")));
+			else	{
+				logger.error("type is not valid...");
+				System.exit(1);
+			}
 			
 	    	while((tmp = br.readLine()) != null)	{
 	    		list.add(tmp);
@@ -67,7 +69,9 @@ public class SimulMain {
 	    	ExecutorService executorService = Executors.newFixedThreadPool(settingsConfig.getThreadSize());
 	    	List<Future<Counter>> futureList = new ArrayList<Future<Counter>>();
 	    	Counter counter = new Counter();
-	    	
+	    	logger.info("----------------------------------------------------------");
+	    	logger.info("------------------start simulator!!!----------------------");
+	    	logger.info("----------------------------------------------------------");
 	    	//task수만큼 
 	    	if(type.equals("collectd"))	{
 	    		for(int i=0; i<threadSize; i++)	{
@@ -104,23 +108,23 @@ public class SimulMain {
 	    		try {
 					counter = futureList.get(i).get();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (ExecutionException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	    	}
 	    	
-	    	//System.out.println("count: " );
 	    	logger.info("count: " + counter.getTotalCount());
 	    	//offset if collectd
 	    	if(type.equals("collectd"))
 	    		logger.info("offset: " + counter.getTotaloffset());
 	    	
+	    	logger.info("----------------------------------------------------------");
+	    	logger.info("-----------------shutdown simulator!!!--------------------");
+	    	logger.info("----------------------------------------------------------");
+	    	
 	    	sc.close();
 	    	
-	    	//만들어진 task로 threadPool 동작
         } catch(Exception e)	{
         	e.printStackTrace();
         }

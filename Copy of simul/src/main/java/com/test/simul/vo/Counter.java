@@ -14,6 +14,7 @@ public class Counter {
 		totalCount+=value;
 	}
 	
+	//offset값의 변화가 없음...
 	public synchronized void addCount(long value, RecordMetadata metadata)	{
 		totalCount+=value;
 		

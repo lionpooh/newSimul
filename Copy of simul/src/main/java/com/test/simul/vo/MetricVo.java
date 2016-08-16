@@ -11,7 +11,7 @@ public class MetricVo {
 	private Double interval;
 	private String dstypes[];
 	private String dsnames[];
-	private double value[];
+	private double values[];
 	private Object meta;
 	
 	public String getHost() {
@@ -68,11 +68,11 @@ public class MetricVo {
 	public void setDsnames(String[] dsnames) {
 		this.dsnames = dsnames;
 	}
-	public double[] getValue() {
-		return value;
+	public double[] getValues() {
+		return values;
 	}
-	public void setValue(double[] value) {
-		this.value = value;
+	public void setValues(double[] values) {
+		this.values = values;
 	}
 	public Object getMeta() {
 		return meta;
