@@ -51,14 +51,13 @@ public class CollectdWinTask implements Runnable{
 		OutputStream os = null;
 		List<List<MetricVo>> simulList = initList(list);
 		List<List<String>> listOfJsonList = new ArrayList<List<String>>();
-		listOfJsonList = parser.voToJson(simulList, "collectd");
-		
+		listOfJsonList = parser.voToJson(simulList, "collectdwin");
 		try {
 			POST_URL = initHttpURL(ip, port);
 			
 			while(isStop)	{
-				
 				for(int i=0; i<listOfJsonList.size(); i++)	{
+					listOfJsonList = parser.voToJson(simulList, "collectdwin");
 					List<String> list = listOfJsonList.get(i);
 					
 					obj = new URL(POST_URL);
@@ -69,7 +68,7 @@ public class CollectdWinTask implements Runnable{
 					conn.setRequestProperty("Content-Type", CONTENT_TYPE);						
 					os = conn.getOutputStream();
 					DataOutputStream dos = new DataOutputStream(os);
-					System.out.println("send: " + list.toString());
+					//System.out.println("send: " + list.toString());
 					counter.addCount(list.size());
 					dos.writeBytes(list.toString());
 					dos.flush();
@@ -99,8 +98,14 @@ public class CollectdWinTask implements Runnable{
 	}
 	
 public List<List<MetricVo>> initList(List<List<MetricVo>> list)	{
-		
-		String host = hostname + String.format("%03d", number);
+	
+		String host = "";
+		if(settingsConfig.getEnablehostname().equals("enable"))	{
+			host = hostname;
+		}
+		else	{
+			host = hostname + String.format("%03d", number);
+		}
 		
 		List<List<MetricVo>> newListList = new ArrayList<List<MetricVo>>();
 		
@@ -120,9 +125,15 @@ public List<List<MetricVo>> initList(List<List<MetricVo>> list)	{
 				metricVo.setInterval(copyVo.getInterval());
 				metricVo.setPlugin(copyVo.getPlugin());
 				metricVo.setPlugin_instance(copyVo.getPlugin_instance());
+				
+				if(copyVo.getPlugin().equals("cpu"))
+					metricVo.setPlugin_instance("");
+				else if(copyVo.getPlugin().equals("memory"))
+					metricVo.setPlugin_instance("");
+				
 				metricVo.setType(copyVo.getType());
 				metricVo.setType_instance(copyVo.getType_instance());
-				metricVo.setValue(copyVo.getValue());
+				metricVo.setValues(copyVo.getValues());
 				
 				newList.add(metricVo);
 			}

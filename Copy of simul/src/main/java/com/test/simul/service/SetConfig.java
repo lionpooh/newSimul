@@ -98,13 +98,13 @@ public class SetConfig {
 			//common-config
 			SettingsConfigVo settingsConfig = new SettingsConfigVo();
 			//file path => null인 경우의 처리
-			filepath = inProp.getProperty("simulator.filepath", null);
+			/*filepath = inProp.getProperty("simulator.filepath", null);
 			if(filepath != null)
 				settingsConfig.setFilePath(filepath);
 			else	{
 				logger.error("sample filepath or file is not valid!");
 				System.exit(0);
-			}
+			}*/
 			
 			//hostName enable일경우의 기능
 			settingsConfig.setEnablehostname(inProp.getProperty("simulator.enablehostname", "disable"));
@@ -201,7 +201,7 @@ public class SetConfig {
 		
 		if(inStr != null)	{
 			//split
-			logger.debug("before valueSet: " + inStr);
+			//logger.debug("before valueSet: " + inStr);
 			StringTokenizer st = new StringTokenizer(inStr, ",");
 			
 			while(st.hasMoreTokens())	{
@@ -226,8 +226,8 @@ public class SetConfig {
 						check = check + 1;
 					}
 				}
-				logger.debug("listSize, value: " + list.size() + ", " + value);
-				logger.debug("after valueSet: " + list);
+				//logger.debug("listSize, value: " + list.size() + ", " + value);
+				//logger.debug("after valueSet: " + list);
 			}
 			
 		} else {

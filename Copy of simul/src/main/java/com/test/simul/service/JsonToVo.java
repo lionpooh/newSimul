@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.json.simple.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.Gson;
 import com.test.simul.vo.MetricVo;
 
@@ -12,6 +16,7 @@ public class JsonToVo {
 	
 	MetricVo metricVo;
 	Gson gson;
+	Logger logger = LoggerFactory.getLogger(JsonToVo.class);
 	
 	public JsonToVo()	{
 		//널값을 허용하고 싶다면
@@ -70,9 +75,22 @@ public class JsonToVo {
 				MetricVo metricVo = metricList.get(k);
 				metricVo.setTime(jsonTime);
 				String json = gson.toJson(metricVo);
+				
+				/*if(!json.contains("\"plugin\":\"df\""))	{
+					
+					if(type.equals("collectd"))	{
+						
+						if(json.contains("\"plugin\":\"memory\""))	{
+							
+						}
+					}
+					else if(type.equals("collectdwin"))	{
+						
+					}
+					
+				}*/
+				
 				json = json.replaceAll("\"time.*(?=,\"interval\")", "\"time\":" + jsonTime);
-				System.out.println("time: " +json);
-				//metricList.add(metricVo);
 				jsonList.add(json);
 			}
 			

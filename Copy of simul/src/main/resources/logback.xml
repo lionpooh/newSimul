@@ -2,12 +2,11 @@
 <configuration>
 
 	<!-- property file location -->
-	<!-- 
-		<property file="${simul.config.location}"/> 
-		
-	-->
-	<property resource="setting.properties"/>
 	
+	<property file="${simul.config.location}"/> 
+	<!-- 
+	<property resource="setting.properties"/>
+	 -->
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>
@@ -34,9 +33,13 @@
 		</encoder>
 	</appender>
 	
-	<logger name="com.test.simul.SimulMain" level="info">
+	<!-- <logger name="org.apache.kafka" level="error">
 		<appender-ref ref="fileLogger"/>
-	</logger>
+	</logger> -->
+	
+	<!-- <logger name="com.test.simul.SimulMain" level="info">
+		<appender-ref ref="fileLogger"/>
+	</logger> -->
 	
 	<if condition='property("log.level").contains("debug")'>
 		<then>

@@ -38,11 +38,6 @@ public class CreateValue {
 		
 		Gson gson = new Gson();
 		
-		for(MetricVo mv : list)	{
-			String str = gson.toJson(mv);
-			System.out.println("json: " + str);
-		}
-		
 		List<List<MetricVo>> listOfMetricVoList = new ArrayList<List<MetricVo>>();
 
 		MetricVo metricVo;
@@ -77,23 +72,29 @@ public class CreateValue {
 
 				// partition수에 맞춰서 들어옴
 				if (plugin.equals("df")) {
-					double value[] = new double[1];
+					double free[];
+					double used[];
+					
 					int size = metricValues.getConfig_value() * metricValues.getDf_partitions().size();
 					
 					if (type_instance.equals("free") && (df_freeCount < size)) {
-						value[0] = metricValues.getDf_free().get(df_freeCount);
+						free = new double[1];
+						free[0] = metricValues.getDf_free().get(df_freeCount);
+						simMetricVo.setValues(free);
+						System.out.println("free: " + free[0]);
 						df_freeCount++;
 					} else if (type_instance.equals("used") && (df_usedCount < size)) {
-						value[0] = metricValues.getDf_used().get(df_usedCount);
+						used = new double[1];
+						used[0] = metricValues.getDf_used().get(df_usedCount);
+						System.out.println("used: " + used[0]);
+						simMetricVo.setValues(used);
 						df_usedCount++;
 					} else {
 						continue;
 					}
-					
+					simMetricVo.setPlugin(plugin);
 					simMetricVo.setType_instance(type_instance);
 					simMetricVo.setType(metricVo.getType());
-					simMetricVo.setPlugin(plugin);
-					simMetricVo.setValue(value);
 					
 					metricVoList.add(simMetricVo);
 					continue;
@@ -103,7 +104,7 @@ public class CreateValue {
 				simMetricVo.setType_instance(type_instance);
 
 				double values[] = setCustomValue(prefix, suffix, k);
-				simMetricVo.setValue(values);
+				simMetricVo.setValues(values);
 
 				metricVoList.add(simMetricVo);
 			}
@@ -144,13 +145,17 @@ public class CreateValue {
 
 	public MetricVo makeMetricDf(String type_instance, String plugin_instance) {
 		
-		String str[] = new String[1];
+		String gauge[] = new String[1];
+		String value[] = new String[1];
 		
 		MetricVo metricVo = new MetricVo();
-		str[0] = "gauge";
-		metricVo.setDsnames(str);
-		str[0] = "values";
-		metricVo.setDstypes(str);
+		
+		gauge[0] = "gauge";
+		metricVo.setDstypes(gauge);
+
+		value[0] = "value";
+		metricVo.setDsnames(value);
+		
 		metricVo.setHost("test");
 		metricVo.setInterval(10.000);
 		//metricVo.setMeta(meta);
@@ -177,7 +182,7 @@ public class CreateValue {
 			String methodName = method[i].getName().toLowerCase();
 
 			if (methodName.contains(inPrefix) && methodName.endsWith(inSuffix) && methodName.startsWith("get")) {
-				System.out.println("method: " + methodName + ", " + "prefix: " + inPrefix + ", " + "suffix: " + inSuffix);
+				//System.out.println("method: " + methodName + ", " + "prefix: " + inPrefix + ", " + "suffix: " + inSuffix);
 				// exception들 많이 발생 - 처리?
 				Object value = method[i].invoke(metricValues);
 				// list로 cast
